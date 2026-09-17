@@ -1,1 +1,459 @@
-/* Component-level styles; primary styling via Tailwind utilities */
+:host {
+  display: block;
+  background: #ff5c39;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #141414;
+}
+
+a,
+button {
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s, opacity 0.2s, transform 0.2s;
+}
+
+/* Hero */
+.hero {
+  min-height: 713px;
+  position: relative;
+  padding: 102px 108px 90px;
+  overflow: hidden;
+  background: #ff5c39;
+}
+.hero::before {
+  content: "LOVE";
+  position: absolute;
+  left: 30px;
+  top: 48px;
+  color: transparent;
+  -webkit-text-stroke: 3px rgba(20, 20, 20, 0.2);
+  font-size: 300px;
+  line-height: 0.8;
+  font-weight: 900;
+  letter-spacing: -18px;
+  white-space: nowrap;
+  animation: posterIn 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.hero::after {
+  content: "";
+  position: absolute;
+  right: -90px;
+  bottom: -150px;
+  width: 470px;
+  height: 470px;
+  border: 3px solid #141414;
+  border-radius: 50%;
+  opacity: 0.25;
+}
+.hero > * {
+  position: relative;
+  z-index: 1;
+}
+.hero-copy {
+  width: 700px;
+  animation: rise 0.7s 0.12s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.eyebrow {
+  display: inline-block;
+  padding: 11px 17px;
+  border: 2px solid #141414;
+  background: #fff6f0;
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: 0.4px;
+  box-shadow: 5px 5px 0 #141414;
+}
+.hero h1 {
+  margin: 29px 0 22px;
+  font-size: 103px;
+  line-height: 0.88;
+  letter-spacing: -7px;
+  text-transform: uppercase;
+  font-weight: 900;
+  max-width: 720px;
+}
+.hero h1 span {
+  color: #2545ff;
+  display: block;
+  -webkit-text-stroke: 2px #141414;
+}
+.hero p {
+  max-width: 590px;
+  margin: 0;
+  font-size: 20px;
+  line-height: 1.4;
+  font-weight: 700;
+}
+.actions {
+  display: flex;
+  gap: 14px;
+  margin-top: 36px;
+}
+.btn {
+  display: inline-block;
+  padding: 17px 27px;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: 0.8px;
+  border: 2px solid #141414;
+}
+.btn.primary {
+  background: #141414;
+  color: #fff6f0;
+  box-shadow: 7px 7px 0 #2545ff;
+}
+.btn.primary:hover {
+  background: #2545ff;
+  box-shadow: 7px 7px 0 #141414;
+}
+.btn.secondary {
+  background: #fff6f0;
+  color: #141414;
+}
+.btn.secondary:hover {
+  background: #2545ff;
+  color: #fff6f0;
+}
+.note {
+  margin-top: 15px;
+  font-size: 12px;
+  font-weight: 800;
+}
+.hero-img {
+  position: absolute;
+  z-index: 2;
+  right: 72px;
+  bottom: 44px;
+  width: 570px;
+  filter: drop-shadow(15px 17px 0 rgba(20, 20, 20, 0.95));
+  animation: rise 0.8s 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+/* Sections */
+.section {
+  padding: 112px 108px;
+}
+.features {
+  background: #ff5c39;
+}
+.section-head {
+  text-align: center;
+  margin: 0 auto 58px;
+}
+.section-head h2 {
+  margin: 0;
+  font-size: 58px;
+  line-height: 0.95;
+  letter-spacing: -3px;
+  text-transform: uppercase;
+  font-weight: 900;
+}
+.section-head p {
+  margin: 17px 0 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* Features */
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 25px;
+}
+.card {
+  background: #fff6f0;
+  border: 3px solid #141414;
+  padding: 32px;
+  min-height: 277px;
+  box-shadow: 9px 9px 0 #141414;
+  animation: rise 0.65s both;
+}
+.card:nth-child(2) {
+  animation-delay: 0.1s;
+}
+.card:nth-child(3) {
+  animation-delay: 0.2s;
+}
+.card:hover {
+  transform: translate(-5px, -5px);
+  box-shadow: 14px 14px 0 #2545ff;
+}
+.glyph {
+  width: 67px;
+  height: 67px;
+  background: #2545ff;
+  color: #fff6f0;
+  border: 3px solid #141414;
+  display: grid;
+  place-items: center;
+  font-size: 34px;
+  font-weight: 900;
+  margin-bottom: 28px;
+}
+.card h3 {
+  margin: 0 0 12px;
+  font-size: 24px;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: -1px;
+}
+.card p {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.45;
+  font-weight: 600;
+}
+
+/* Pricing */
+.pricing {
+  background: #fff6f0;
+  border-top: 3px solid #141414;
+  border-bottom: 3px solid #141414;
+}
+.pricing .section-head h2 {
+  color: #141414;
+}
+.price-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 25px;
+}
+.price-card {
+  position: relative;
+  background: #fff6f0;
+  border: 3px solid #141414;
+  padding: 35px;
+  min-height: 425px;
+  box-shadow: 8px 8px 0 #141414;
+}
+.price-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 8px 13px 0 #2545ff;
+}
+.price-card.featured {
+  background: #141414;
+  color: #fff6f0;
+  border-color: #141414;
+  box-shadow: 12px 12px 0 #2545ff;
+}
+.price-card.featured:hover {
+  box-shadow: 12px 17px 0 #ff5c39;
+}
+.popular {
+  position: absolute;
+  right: 22px;
+  top: 22px;
+  background: #ff5c39;
+  color: #141414;
+  padding: 8px 10px;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+.price-card h3 {
+  margin: 0;
+  font-size: 27px;
+  text-transform: uppercase;
+  letter-spacing: -1px;
+}
+.price {
+  display: flex;
+  align-items: baseline;
+  margin-top: 28px;
+}
+.amount {
+  font-size: 56px;
+  font-weight: 900;
+  letter-spacing: -4px;
+}
+.period {
+  font-size: 16px;
+  font-weight: 700;
+  margin-left: 5px;
+}
+.price-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 28px 0 0;
+  display: grid;
+  gap: 13px;
+}
+.price-card li {
+  font-size: 15px;
+  font-weight: 700;
+}
+.price-card li::before {
+  content: "✓";
+  color: #2545ff;
+  font-size: 19px;
+  font-weight: 900;
+  margin-right: 10px;
+}
+.featured li::before {
+  color: #ff5c39;
+}
+.price-card .btn {
+  position: absolute;
+  left: 35px;
+  right: 35px;
+  bottom: 34px;
+  text-align: center;
+}
+.price-card:not(.featured) .btn {
+  background: #141414;
+  color: #fff6f0;
+}
+.price-card:not(.featured) .btn:hover {
+  background: #2545ff;
+}
+.featured .btn {
+  background: #ff5c39;
+  color: #141414;
+  border-color: #ff5c39;
+}
+.featured .btn:hover {
+  background: #fff6f0;
+}
+
+/* CTA */
+.cta {
+  padding: 110px 108px;
+  background: #ff5c39;
+}
+.cta-inner {
+  border: 3px solid #141414;
+  background: #2545ff;
+  color: #fff6f0;
+  padding: 82px 40px;
+  text-align: center;
+  box-shadow: 13px 13px 0 #141414;
+  position: relative;
+  overflow: hidden;
+}
+.cta-inner::before {
+  content: "";
+  position: absolute;
+  width: 330px;
+  height: 330px;
+  border: 3px solid #ff5c39;
+  border-radius: 50%;
+  left: -100px;
+  top: -170px;
+}
+.cta-inner h2 {
+  position: relative;
+  margin: 0;
+  font-size: 65px;
+  line-height: 0.95;
+  letter-spacing: -4px;
+  text-transform: uppercase;
+}
+.cta-inner p {
+  position: relative;
+  margin: 20px auto 0;
+  font-size: 19px;
+  font-weight: 700;
+}
+.cta-inner .btn {
+  position: relative;
+  margin-top: 31px;
+  background: #fff6f0;
+  color: #141414;
+}
+.cta-inner .btn:hover {
+  background: #ff5c39;
+}
+
+/* Footer */
+.footer {
+  height: 126px;
+  padding: 0 108px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #141414;
+  color: #fff6f0;
+}
+.footer .brand {
+  color: #fff6f0;
+}
+.footer .brandmark {
+  background: #ff5c39;
+  color: #141414;
+}
+.footer nav {
+  display: flex;
+  gap: 30px;
+}
+.footer nav a {
+  color: #fff6f0;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+.footer nav a:hover {
+  color: #ff5c39;
+}
+.footer p {
+  margin: 0;
+  color: #fff6f0;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* Shared brand mark (footer) */
+.brandmark {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  background: #141414;
+  color: #ff5c39;
+  font-size: 22px;
+  font-weight: 900;
+  line-height: 1;
+  transform: rotate(-6deg);
+}
+.brandname {
+  font-size: 23px;
+  font-weight: 900;
+  letter-spacing: -1.5px;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  color: #141414;
+  text-decoration: none;
+}
+
+@keyframes posterIn {
+  from {
+    opacity: 0;
+    transform: translateX(-90px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
