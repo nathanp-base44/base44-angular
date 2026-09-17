@@ -1,13 +1,13 @@
-<header class="sticky top-0 z-50 border-b border-slate-200 bg-white/80 backdrop-blur">
-  <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-    <a routerLink="/" class="flex items-center gap-2">
-      <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-brand text-white font-bold">L</span>
-      <span class="text-lg font-semibold text-slate-900">Lumina</span>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a routerLink="/" class="brand">
+      <span class="brandmark">L</span>
+      <span class="brandname">Lumina</span>
     </a>
-    <nav class="flex items-center gap-6">
-      <a routerLink="/" routerLinkActive="text-brand" [routerLinkActiveOptions]="{ exact: true }" class="text-sm font-medium text-slate-600 hover:text-slate-900">Home</a>
-      <a routerLink="/about" routerLinkActive="text-brand" class="text-sm font-medium text-slate-600 hover:text-slate-900">About</a>
-      <a href="#" class="rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white hover:bg-brand-dark">Get started</a>
+    <nav class="nav">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+      <a routerLink="/about" routerLinkActive="active">About</a>
+      <a href="#" class="navcta">Get started</a>
     </nav>
   </div>
 </header>
