@@ -1,0 +1,90 @@
+:host {
+  display: block;
+  background: #ff5c39;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #141414;
+  min-height: calc(100vh - 92px);
+}
+
+.invoices {
+  padding: 112px 108px;
+}
+
+.section-head {
+  text-align: center;
+  margin: 0 auto 58px;
+}
+.section-head h2 {
+  margin: 0;
+  font-size: 58px;
+  line-height: 0.95;
+  letter-spacing: -3px;
+  text-transform: uppercase;
+  font-weight: 900;
+}
+.section-head p {
+  margin: 17px 0 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.table-wrap {
+  border: 3px solid #141414;
+  background: #fff6f0;
+  box-shadow: 9px 9px 0 #141414;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+thead th {
+  background: #141414;
+  color: #fff6f0;
+  text-align: left;
+  padding: 18px 24px;
+  font-size: 13px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+tbody td {
+  padding: 18px 24px;
+  border-top: 2px solid #141414;
+  white-space: nowrap;
+}
+
+tbody tr {
+  transition: background-color 0.2s;
+}
+tbody tr:hover {
+  background: #f1f1f4;
+}
+
+.badge {
+  display: inline-block;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: 2px solid #141414;
+}
+.badge.paid {
+  background: #2545ff;
+  color: #fff6f0;
+}
+.badge.pending {
+  background: #fff6f0;
+  color: #141414;
+}
+.badge.overdue {
+  background: #ff5c39;
+  color: #141414;
+}

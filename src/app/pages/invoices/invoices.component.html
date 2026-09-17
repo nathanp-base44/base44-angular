@@ -1,0 +1,30 @@
+<section class="invoices">
+  <div class="section-head">
+    <h2>Invoices</h2>
+    <p>Recent billing activity across all clients.</p>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Invoice</th>
+          <th>Client</th>
+          <th>Date</th>
+          <th>Amount</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (inv of invoices; track inv.number) {
+          <tr>
+            <td>{{ inv.number }}</td>
+            <td>{{ inv.client }}</td>
+            <td>{{ inv.date }}</td>
+            <td>{{ inv.amount }}</td>
+            <td><span class="badge" [class.paid]="inv.status === 'Paid'" [class.pending]="inv.status === 'Pending'" [class.overdue]="inv.status === 'Overdue'">{{ inv.status }}</span></td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</section>
