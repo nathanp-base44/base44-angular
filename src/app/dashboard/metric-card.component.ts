@@ -1,4 +1,4 @@
-import { Component, Input, booleanAttribute, inject } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 export type MetricAccent = 'green' | 'amber' | 'red' | 'sky' | 'violet';
@@ -11,39 +11,31 @@ const ACCENT_MAP: Record<MetricAccent, string> = {
   violet: 'text-violet-500',
 };
 
-/**
- * Recreation of pulseview's MetricCard. Light theme by default (matches the
- * home dashboard); add the `dark` attribute for pulseview's original dark look.
- */
+/** Recreation of pulseview's MetricCard, adapted to this app's light theme. */
 @Component({
   selector: 'app-metric-card',
   standalone: true,
   template: `
-    <div
-      class="p-4"
-      [class]="dark ? 'rounded-lg border border-slate-800 bg-slate-900/60' : 'rounded-2xl border border-slate-200 bg-white shadow-sm'"
-    >
+    <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
       <div class="flex items-center justify-between">
-        <span class="text-xs font-medium uppercase tracking-wider" [class]="dark ? 'text-slate-400' : 'text-slate-500'">{{ label }}</span>
+        <span class="text-xs font-medium uppercase tracking-wider text-slate-500">{{ label }}</span>
         @if (icon) {
           <span class="flex h-4 w-4" [class]="accentClass" [innerHTML]="iconHtml"></span>
         }
       </div>
       <div class="mt-2 flex items-baseline gap-1">
-        <span class="text-2xl font-semibold" [class]="dark ? 'text-slate-100' : 'text-slate-900'">{{ value }}</span>
+        <span class="text-2xl font-semibold text-slate-900">{{ value }}</span>
         @if (unit) {
-          <span class="text-sm" [class]="dark ? 'text-slate-400' : 'text-slate-500'">{{ unit }}</span>
+          <span class="text-sm text-slate-500">{{ unit }}</span>
         }
       </div>
       @if (sub) {
-        <div class="mt-1 text-xs" [class]="dark ? 'text-slate-500' : 'text-slate-400'">{{ sub }}</div>
+        <div class="mt-1 text-xs text-slate-400">{{ sub }}</div>
       }
     </div>
   `,
 })
 export class MetricCardComponent {
-  /** Use pulseview's dark card styling. */
-  @Input({ transform: booleanAttribute }) dark = false;
   @Input({ required: true }) label!: string;
   @Input({ required: true }) value!: string;
   @Input() unit?: string;
