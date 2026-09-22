@@ -1,0 +1,26 @@
+<div class="rounded-lg border border-slate-200 bg-white shadow-sm">
+  <div class="p-4">
+    <div class="flex flex-col text-center items-center">
+      @if (player.img) {
+        <img
+          [src]="player.img"
+          [alt]="player.name ?? ''"
+          class="h-40 w-40 rounded-full object-cover bg-slate-200"
+        />
+      } @else {
+        <div class="flex h-40 w-40 items-center justify-center rounded-full bg-slate-300 text-4xl font-semibold text-white">
+          {{ player.name?.charAt(0) ?? '' }}
+        </div>
+      }
+      <div class="mt-3">
+        <p>{{ player.name }}</p>
+        <div>
+          <div class="mb-5">
+            <h4>{{ player.team }}, {{ player.position }}</h4>
+          </div>
+          <app-baseball-player-header-rating [playerRatings]="player.playerRatings" />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

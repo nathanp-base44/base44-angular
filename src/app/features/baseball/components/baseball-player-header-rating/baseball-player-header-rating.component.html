@@ -1,0 +1,26 @@
+<table class="w-full border-collapse items-center bg-transparent">
+  <tbody>
+    <tr>
+      <th class="whitespace-nowrap border border-l-0 border-r-0 border-solid border-sky-100 bg-sky-50 p-3 py-3 text-left align-middle text-xs font-semibold uppercase text-sky-500">
+        Rating
+      </th>
+      <th class="whitespace-nowrap border-t-0 border-l-0 border-r-0 p-3 text-left align-middle text-xs"></th>
+      <th class="whitespace-nowrap border border-l-0 border-r-0 border-solid border-sky-100 bg-sky-50 p-3 py-3 text-left align-middle text-xs font-semibold uppercase text-sky-500">
+        Pos. Rank
+      </th>
+    </tr>
+    @for (row of rows; track row.label) {
+      <tr>
+        <td class="whitespace-nowrap border-t-0 border-l-0 border-r-0 p-3 align-middle text-xs">
+          {{ row.rating ? row.rating.totalRating.toFixed(2) : '-' }}
+        </td>
+        <th class="whitespace-nowrap border-t-0 border-l-0 border-r-0 p-3 text-left align-middle text-xs">
+          {{ row.label }}
+        </th>
+        <td class="whitespace-nowrap border-t-0 border-l-0 border-r-0 p-3 align-middle text-xs">
+          {{ row.rating ? row.rating.positionalRanking : '-' }}
+        </td>
+      </tr>
+    }
+  </tbody>
+</table>
