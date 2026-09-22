@@ -1,0 +1,76 @@
+<div class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+  <div class="flex flex-col gap-3 border-b border-slate-200 p-5 sm:flex-row sm:items-center sm:justify-between">
+    <div>
+      <h2 class="text-sm font-semibold text-slate-900">Recent orders</h2>
+      <p class="text-xs text-slate-500">{{ filtered().length }} records</p>
+    </div>
+    <input
+      type="search"
+      placeholder="Search orders…"
+      [value]="query()"
+      (input)="search($any($event.target).value)"
+      class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-700 placeholder:text-slate-400 focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20 sm:w-64"
+    />
+  </div>
+
+  <div class="overflow-x-auto">
+    <table class="w-full text-sm">
+      <thead class="bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
+        <tr>
+          @for (col of columns; track col.key) {
+            <th
+              class="cursor-pointer select-none px-5 py-3 font-medium hover:text-slate-900"
+              [class.text-right]="col.align === 'right'"
+              [class.text-left]="col.align !== 'right'"
+              (click)="sortBy(col.key)"
+            >
+              {{ col.label }}
+              @if (sortKey() === col.key) {
+                <span class="ml-1 text-brand">{{ sortDir() === 'asc' ? '▲' : '▼' }}</span>
+              }
+            </th>
+          }
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-slate-100">
+        @for (order of pageRows(); track order.id) {
+          <tr class="hover:bg-slate-50">
+            <td class="px-5 py-3 font-medium text-slate-900">{{ order.id }}</td>
+            <td class="px-5 py-3 text-slate-700">{{ order.customer }}</td>
+            <td class="px-5 py-3 text-slate-700">{{ order.product }}</td>
+            <td class="px-5 py-3 text-slate-500">{{ order.category }}</td>
+            <td class="px-5 py-3 text-slate-500">{{ order.date | date: 'mediumDate' }}</td>
+            <td class="px-5 py-3">
+              <span class="rounded-full px-2.5 py-1 text-xs font-medium" [class]="statusClass(order.status)">{{ order.status }}</span>
+            </td>
+            <td class="px-5 py-3 text-right font-medium text-slate-900">{{ order.amount | currency }}</td>
+          </tr>
+        } @empty {
+          <tr>
+            <td [attr.colspan]="columns.length" class="px-5 py-10 text-center text-slate-400">No orders match your search.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <div class="flex items-center justify-between border-t border-slate-200 px-5 py-3 text-sm text-slate-500">
+    <span>Page {{ page() }} of {{ totalPages() }}</span>
+    <div class="flex gap-2">
+      <button
+        (click)="goTo(page() - 1)"
+        [disabled]="page() === 1"
+        class="rounded-lg border border-slate-200 px-3 py-1.5 font-medium text-slate-700 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40"
+      >
+        Previous
+      </button>
+      <button
+        (click)="goTo(page() + 1)"
+        [disabled]="page() === totalPages()"
+        class="rounded-lg border border-slate-200 px-3 py-1.5 font-medium text-slate-700 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40"
+      >
+        Next
+      </button>
+    </div>
+  </div>
+</div>
