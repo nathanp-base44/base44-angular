@@ -15,7 +15,7 @@ App is served on port 3000 via nginx, which proxies `/api/*` to the api service 
 - `web` — Angular dev server with live reload (`ng serve`)
 - `api` — Express API (`node --watch`), queries Postgres
 - `postgres` — postgres:16, persistent `pgdata` volume, healthchecked with `pg_isready`
-- `seed` — one-shot, runs `db/seed.js` after postgres is healthy, then exits
+- Seeding: `api` runs the idempotent `db/seed.js` on every start before launching the server
 - `proxy` — nginx routing /api to api:4000 and / to web:4200
 
 ## Notes
