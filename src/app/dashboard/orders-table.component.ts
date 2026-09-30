@@ -11,7 +11,7 @@ type SortKey = keyof Order;
   templateUrl: './orders-table.component.html',
 })
 export class OrdersTableComponent {
-  private readonly orders = inject(AnalyticsService).getOrders();
+  private readonly api = inject(AnalyticsService);
 
   readonly columns: { key: SortKey; label: string; align?: 'right' }[] = [
     { key: 'id', label: 'Order' },
@@ -28,14 +28,19 @@ export class OrdersTableComponent {
   readonly sortKey = signal<SortKey>('date');
   readonly sortDir = signal<'asc' | 'desc'>('desc');
   readonly page = signal(1);
+  readonly orders = signal<Order[]>([]);
+
+  constructor() {
+    this.api.getOrders().subscribe((orders) => this.orders.set(orders));
+  }
 
   readonly filtered = computed(() => {
     const q = this.query().trim().toLowerCase();
     const key = this.sortKey();
     const dir = this.sortDir() === 'asc' ? 1 : -1;
     const rows = q
-      ? this.orders.filter((o) => Object.values(o).some((v) => String(v).toLowerCase().includes(q)))
-      : [...this.orders];
+      ? this.orders().filter((o) => Object.values(o).some((v) => String(v).toLowerCase().includes(q)))
+      : [...this.orders()];
     return rows.sort((a, b) => (a[key] < b[key] ? -1 : a[key] > b[key] ? 1 : 0) * dir);
   });
 
