@@ -6,6 +6,56 @@ services:
     volumes:
       - .:/app
       - /app/node_modules
+    restart: on-failure
+  api:
+    image: node:22
+    working_dir: /app/db
+    command: sh -c "npm install && npm run dev"
+    volumes:
+      - .:/app
+      - /app/db/node_modules
+    environment:
+      - PGHOST=postgres
+      - PGPORT=5432
+      - PGUSER=orders
+      - PGPASSWORD=orders
+      - PGDATABASE=orders
+    env_file:
+      - /run/base44/app.env
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: on-failure
+  postgres:
+    image: postgres:16
+    environment:
+      - POSTGRES_USER=orders
+      - POSTGRES_PASSWORD=orders
+      - POSTGRES_DB=orders
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U orders -d orders"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    restart: on-failure
+  seed:
+    image: node:22
+    working_dir: /app/db
+    command: sh -c "npm install && npm run seed"
+    volumes:
+      - .:/app
+      - /app/db/node_modules
+    environment:
+      - PGHOST=postgres
+      - PGPORT=5432
+      - PGUSER=orders
+      - PGPASSWORD=orders
+      - PGDATABASE=orders
+    depends_on:
+      postgres:
+        condition: service_healthy
   proxy:
     image: nginx:alpine
     volumes:
@@ -14,3 +64,8 @@ services:
       - "3000:3000"
     depends_on:
       - web
+      - api
+    restart: on-failure
+
+volumes:
+  pgdata:
