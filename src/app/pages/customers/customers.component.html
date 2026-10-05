@@ -1,0 +1,8 @@
+<div class="mx-auto max-w-7xl space-y-6">
+  <div class="grid gap-4 sm:grid-cols-3">
+    <app-stat-card label="Total customers" [value]="totalCustomers().toString()" hint="Unique accounts" />
+    <app-stat-card label="Total revenue" [value]="$any(totalRevenue() | currency)" hint="All customers" />
+    <app-stat-card label="Avg. revenue / customer" [value]="$any(avgRevenuePerCustomer() | currency)" hint="Lifetime value" />
+  </div>
+  <app-customers-table />
+</div>

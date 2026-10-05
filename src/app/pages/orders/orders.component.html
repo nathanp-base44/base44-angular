@@ -1,0 +1,9 @@
+<div class="mx-auto max-w-7xl space-y-6">
+  <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <app-stat-card label="Total revenue" [value]="$any(totalRevenue() | currency)" hint="All orders" />
+    <app-stat-card label="Total orders" [value]="totalOrders().toString()" hint="All time" />
+    <app-stat-card label="Pending" [value]="pendingCount().toString()" hint="Awaiting payment" />
+    <app-stat-card label="Refunded" [value]="refundedCount().toString()" hint="Refund issued" />
+  </div>
+  <app-orders-table />
+</div>

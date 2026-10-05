@@ -31,9 +31,9 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 export class SidebarComponent {
   items = [
     { label: 'Dashboard', icon: '📊', link: '/' },
-    { label: 'Orders', icon: '🧾', link: '/' },
-    { label: 'Customers', icon: '👥', link: '/' },
-    { label: 'Reports', icon: '📈', link: '/' },
+    { label: 'Orders', icon: '🧾', link: '/orders' },
+    { label: 'Customers', icon: '👥', link: '/customers' },
+    { label: 'Reports', icon: '📈', link: '/reports' },
     { label: 'About', icon: 'ℹ️', link: '/about' },
   ];
 }

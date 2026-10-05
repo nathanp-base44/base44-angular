@@ -1,0 +1,32 @@
+<div class="mx-auto max-w-7xl space-y-6">
+  <div class="grid gap-4 sm:grid-cols-3">
+    <app-stat-card label="YTD revenue" [value]="$any(ytdRevenue() | currency)" hint="Jan–Sep 2026" />
+    <app-stat-card label="YTD orders" [value]="ytdOrders().toString()" hint="Jan–Sep 2026" />
+    <app-stat-card label="Avg. order value" [value]="$any(avgOrderValue() | currency)" hint="Across all orders" />
+  </div>
+
+  <div class="grid gap-6 lg:grid-cols-3">
+    <div class="lg:col-span-2"><app-revenue-chart /></div>
+    <app-category-chart />
+  </div>
+
+  <div class="grid gap-6 lg:grid-cols-2">
+    <app-status-chart />
+    <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+      <div class="mb-4">
+        <h2 class="text-sm font-semibold text-slate-900">Top customers</h2>
+        <p class="text-xs text-slate-500">By total revenue</p>
+      </div>
+      <ul class="divide-y divide-slate-100">
+        @for (c of topCustomers(); track c.customer) {
+          <li class="flex items-center justify-between py-3 text-sm">
+            <span class="font-medium text-slate-900">{{ c.customer }}</span>
+            <span class="text-slate-600">{{ c.total | currency }}</span>
+          </li>
+        } @empty {
+          <li class="py-6 text-center text-sm text-slate-400">No data yet.</li>
+        }
+      </ul>
+    </div>
+  </div>
+</div>
