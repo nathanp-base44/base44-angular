@@ -6,8 +6,9 @@ import { AnalyticsService } from '../data/analytics.service';
   selector: 'app-revenue-chart',
   standalone: true,
   imports: [NgApexchartsModule],
+  host: { style: 'display: block; height: 100%' },
   template: `
-    <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+    <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm h-full flex flex-col">
       <div class="mb-4">
         <h2 class="text-sm font-semibold text-slate-900">Revenue over time</h2>
         <p class="text-xs text-slate-500">Monthly revenue and order volume, 2026</p>
