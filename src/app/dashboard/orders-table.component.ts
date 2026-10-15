@@ -8,6 +8,7 @@ type SortKey = keyof Order;
   selector: 'app-orders-table',
   standalone: true,
   imports: [CurrencyPipe, DatePipe],
+  host: { style: 'display: block' },
   templateUrl: './orders-table.component.html',
 })
 export class OrdersTableComponent {
