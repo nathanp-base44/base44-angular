@@ -18,6 +18,10 @@ App is served on port 3000 via nginx, which proxies `/api/*` to the api service 
 - Seeding: `api` runs the idempotent `db/seed.js` on every start before launching the server
 - `proxy` — nginx routing /api to api:4000 and / to web:4200
 
+## Navigation verification
+- Orders (`/orders`) reuses the dashboard order table. Customers (`/customers`) groups the existing order history by customer name; it is not a separate customer database.
+- Verify by clicking Orders → Customers → Orders → Dashboard in the sidebar and confirming each route and its content change.
+
 ## Notes
 - The dev server uses `--allowed-hosts all` (Angular 18 builder has no `--disable-host-check`).
 - `npm install` runs on every container start for both `web` and `api` (node_modules in anonymous volumes).
