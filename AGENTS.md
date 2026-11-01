@@ -2,8 +2,10 @@
 
 ## Stack
 - Angular 18 frontend (port 4200 inside compose, proxied to 3000)
-- Node/Express API (`db/server.js`) serving GET /api/orders from Postgres
-- Postgres 16 database (orders table, seeded on first boot by `db/seed.js`)
+- Node/Express API (`db/server.js`) serving GET /api/orders and CRUD /api/users (GET, POST, PATCH /:id, DELETE /:id) from Postgres
+- Postgres 16 database (orders and users tables, each seeded when empty by `db/seed.js`)
+- Admin user management page at `/admin/users` (sidebar "Users"). The app has no auth yet, so the page is not access-gated.
+- `node --watch` only reloads `server.js`; after editing `db/seed.js` restart the `api` service to re-run seeding.
 
 ## Running
 ```
