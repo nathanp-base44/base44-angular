@@ -6,8 +6,9 @@ import { AnalyticsService } from '../data/analytics.service';
   selector: 'app-category-chart',
   standalone: true,
   imports: [NgApexchartsModule],
+  host: { style: 'display: block; height: 100%' },
   template: `
-    <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+    <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm h-full flex flex-col">
       <div class="mb-4">
         <h2 class="text-sm font-semibold text-slate-900">Sales by category</h2>
         <p class="text-xs text-slate-500">Share of revenue, year to date</p>
