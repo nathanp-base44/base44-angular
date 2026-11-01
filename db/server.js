@@ -61,9 +61,11 @@ app.post('/api/users', async (req, res) => {
   const { name, email, role = 'Viewer', status = 'Invited' } = req.body;
   try {
     const { rows } = await pool.query(
-      `INSERT INTO users (name, email, role, status, created_at) VALUES ($1, $2, $3, $4, $5) RETURNING ${USER_COLUMNS}`,
+      `INSERT INTO users (name, email, role, status, created_at) VALUES ($1, $2, $3, $4, $5)
+       ON CONFLICT (email) DO NOTHING RETURNING ${USER_COLUMNS}`,
       [normalize('name', name), normalize('email', email), role, status, new Date().toISOString().slice(0, 10)]
     );
+    if (!rows.length) return res.status(409).json({ error: 'A user with this email already exists' });
     res.status(201).json(rows[0]);
   } catch (err) {
     handleDbError(res, err);
