@@ -9,5 +9,9 @@ export const routes: Routes = [
     path: 'about',
     loadComponent: () => import('./pages/about/about.component').then((m) => m.AboutComponent),
   },
+  {
+    path: 'customers',
+    loadComponent: () => import('./pages/customers/customers.component').then((m) => m.CustomersComponent),
+  },
   { path: '**', redirectTo: '' },
 ];
