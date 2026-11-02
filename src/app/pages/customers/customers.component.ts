@@ -1,5 +1,6 @@
-import { Component, inject } from '@angular/core';
-import { AsyncPipe, CurrencyPipe } from '@angular/common';
+import { Component, computed, inject, signal } from '@angular/core';
+import { CurrencyPipe } from '@angular/common';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import { AnalyticsService, Order } from '../../data/analytics.service';
 
@@ -25,10 +26,21 @@ function summarize(orders: Order[]): CustomerSummary[] {
 @Component({
   selector: 'app-customers',
   standalone: true,
-  imports: [AsyncPipe, CurrencyPipe],
+  imports: [CurrencyPipe],
   template: `
     <div class="p-6">
       <h1 class="mb-4 text-xl font-semibold text-slate-900">Customers</h1>
+      <div class="mb-4 flex flex-wrap items-center gap-3">
+        <input type="search" placeholder="Search customers…" [value]="search()" (input)="search.set($any($event.target).value)"
+          class="w-64 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm" />
+        <select (change)="minOrders.set(+$any($event.target).value)" class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm">
+          <option value="0">Any orders</option><option value="2">2+ orders</option><option value="5">5+ orders</option>
+        </select>
+        <select (change)="minSpent.set(+$any($event.target).value)" class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm">
+          <option value="0">Any spend</option><option value="500">$500+</option><option value="1000">$1,000+</option><option value="5000">$5,000+</option>
+        </select>
+        <span class="text-sm text-slate-500">{{ filtered().length }} of {{ customers().length }}</span>
+      </div>
       <div class="overflow-x-auto rounded-xl border border-slate-200 bg-white">
         <table class="w-full text-left text-sm">
           <thead class="border-b border-slate-200 text-xs uppercase text-slate-500">
@@ -40,7 +52,7 @@ function summarize(orders: Order[]): CustomerSummary[] {
             </tr>
           </thead>
           <tbody>
-            @for (c of customers$ | async; track c.name) {
+            @for (c of filtered(); track c.name) {
               <tr class="border-b border-slate-100 last:border-0">
                 <td class="px-4 py-3 font-medium text-slate-900">{{ c.name }}</td>
                 <td class="px-4 py-3 text-slate-600">{{ c.orders }}</td>
@@ -48,7 +60,7 @@ function summarize(orders: Order[]): CustomerSummary[] {
                 <td class="px-4 py-3 text-slate-600">{{ c.lastOrder }}</td>
               </tr>
             } @empty {
-              <tr><td colspan="4" class="px-4 py-6 text-center text-slate-400">No customers yet.</td></tr>
+              <tr><td colspan="4" class="px-4 py-6 text-center text-slate-400">{{ customers().length ? 'No customers match your filters.' : 'No customers yet.' }}</td></tr>
             }
           </tbody>
         </table>
@@ -57,5 +69,14 @@ function summarize(orders: Order[]): CustomerSummary[] {
   `,
 })
 export class CustomersComponent {
-  customers$ = inject(AnalyticsService).getOrders().pipe(map(summarize));
+  customers = toSignal(inject(AnalyticsService).getOrders().pipe(map(summarize)), { initialValue: [] });
+  search = signal('');
+  minOrders = signal(0);
+  minSpent = signal(0);
+  filtered = computed(() => {
+    const q = this.search().trim().toLowerCase();
+    return this.customers().filter(
+      (c) => c.name.toLowerCase().includes(q) && c.orders >= this.minOrders() && c.totalSpent >= this.minSpent(),
+    );
+  });
 }
