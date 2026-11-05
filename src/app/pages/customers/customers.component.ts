@@ -8,16 +8,14 @@ interface CustomerSummary {
   name: string;
   orders: number;
   totalSpent: number;
-  amount: number;
   lastOrder: string;
 }
 
 function summarize(orders: Order[]): CustomerSummary[] {
   const byName = new Map<string, CustomerSummary>();
   for (const o of orders) {
-    const c = byName.get(o.customer) ?? { name: o.customer, orders: 0, totalSpent: 0, amount: 0, lastOrder: o.date };
+    const c = byName.get(o.customer) ?? { name: o.customer, orders: 0, totalSpent: 0, lastOrder: o.date };
     c.orders++;
-    c.amount += o.amount;
     if (o.status !== 'Refunded') c.totalSpent += o.amount;
     if (o.date > c.lastOrder) c.lastOrder = o.date;
     byName.set(o.customer, c);
@@ -49,7 +47,6 @@ function summarize(orders: Order[]): CustomerSummary[] {
             <tr>
               <th class="px-4 py-3">Customer</th>
               <th class="px-4 py-3">Orders</th>
-              <th class="px-4 py-3">Amount</th>
               <th class="px-4 py-3">Total spent</th>
               <th class="px-4 py-3">Last order</th>
             </tr>
@@ -59,12 +56,11 @@ function summarize(orders: Order[]): CustomerSummary[] {
               <tr class="border-b border-slate-100 last:border-0">
                 <td class="px-4 py-3 font-medium text-slate-900">{{ c.name }}</td>
                 <td class="px-4 py-3 text-slate-600">{{ c.orders }}</td>
-                <td class="px-4 py-3 text-slate-600">{{ c.amount | currency: 'USD' : 'symbol' : '1.0-0' }}</td>
                 <td class="px-4 py-3 text-slate-600">{{ c.totalSpent | currency: 'USD' : 'symbol' : '1.0-0' }}</td>
                 <td class="px-4 py-3 text-slate-600">{{ c.lastOrder }}</td>
               </tr>
             } @empty {
-              <tr><td colspan="5" class="px-4 py-6 text-center text-slate-400">{{ customers().length ? 'No customers match your filters.' : 'No customers yet.' }}</td></tr>
+              <tr><td colspan="4" class="px-4 py-6 text-center text-slate-400">{{ customers().length ? 'No customers match your filters.' : 'No customers yet.' }}</td></tr>
             }
           </tbody>
         </table>
