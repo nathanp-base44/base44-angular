@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { RevenueChartComponent } from '../../dashboard/revenue-chart.component';
 import { CategoryChartComponent } from '../../dashboard/category-chart.component';
 import { OrdersTableComponent } from '../../dashboard/orders-table.component';
+import { StatusChartComponent } from '../../dashboard/status-chart.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RevenueChartComponent, CategoryChartComponent, OrdersTableComponent],
+  imports: [RevenueChartComponent, CategoryChartComponent, OrdersTableComponent, StatusChartComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
