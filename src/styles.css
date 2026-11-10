@@ -10,3 +10,16 @@ body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
+
+/* Dark mode: toggled via .dark on <html> */
+html.dark { color-scheme: dark; }
+html.dark .bg-slate-50 { background-color: #0f172a; }
+html.dark .bg-white { background-color: #1e293b; }
+html.dark .border-slate-100, html.dark .border-slate-200 { border-color: #334155; }
+html.dark .divide-slate-100 > :not([hidden]) ~ :not([hidden]) { border-color: #334155; }
+html.dark .text-slate-900 { color: #f1f5f9; }
+html.dark .text-slate-700 { color: #cbd5e1; }
+html.dark .text-slate-600 { color: #94a3b8; }
+html.dark .text-slate-500, html.dark .text-slate-400 { color: #94a3b8; }
+html.dark .apexcharts-text, html.dark .apexcharts-legend-text { fill: #94a3b8 !important; color: #94a3b8 !important; }
+html.dark .apexcharts-gridline { stroke: #334155; }
