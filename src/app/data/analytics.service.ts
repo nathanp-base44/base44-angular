@@ -25,6 +25,13 @@ export interface Order {
   date: string;
 }
 
+export interface CustomerNote {
+  id: number;
+  customer: string;
+  body: string;
+  created_at: string;
+}
+
 /**
  * Analytics data source. Orders are fetched from the Postgres-backed API;
  * the chart helpers still return static sample data.
@@ -35,6 +42,14 @@ export class AnalyticsService {
 
   getOrders(): Observable<Order[]> {
     return this.http.get<Order[]>('/api/orders').pipe(shareReplay(1));
+  }
+
+  getLatestCustomerNotes(): Observable<CustomerNote[]> {
+    return this.http.get<CustomerNote[]>('/api/customer-notes/latest');
+  }
+
+  addCustomerNote(customer: string, body: string): Observable<CustomerNote> {
+    return this.http.post<CustomerNote>('/api/customer-notes', { customer, body });
   }
 
   getMonthlyRevenue(): MonthlyRevenue[] {

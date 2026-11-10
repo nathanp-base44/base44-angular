@@ -1,7 +1,7 @@
-import { Component, inject } from '@angular/core';
-import { AsyncPipe, CurrencyPipe } from '@angular/common';
+import { Component, inject, signal } from '@angular/core';
+import { AsyncPipe, CurrencyPipe, DatePipe } from '@angular/common';
 import { map } from 'rxjs';
-import { AnalyticsService, Order } from '../../data/analytics.service';
+import { AnalyticsService, CustomerNote, Order } from '../../data/analytics.service';
 
 interface CustomerSummary {
   name: string;
@@ -25,7 +25,7 @@ function summarize(orders: Order[]): CustomerSummary[] {
 @Component({
   selector: 'app-customers',
   standalone: true,
-  imports: [AsyncPipe, CurrencyPipe],
+  imports: [AsyncPipe, CurrencyPipe, DatePipe],
   template: `
     <div class="p-6">
       <h1 class="mb-4 text-xl font-semibold text-slate-900">Customers</h1>
@@ -37,6 +37,7 @@ function summarize(orders: Order[]): CustomerSummary[] {
               <th class="px-4 py-3">Orders</th>
               <th class="px-4 py-3">Total spent</th>
               <th class="px-4 py-3">Last order</th>
+              <th class="px-4 py-3">Latest note</th>
             </tr>
           </thead>
           <tbody>
@@ -46,9 +47,34 @@ function summarize(orders: Order[]): CustomerSummary[] {
                 <td class="px-4 py-3 text-slate-600">{{ c.orders }}</td>
                 <td class="px-4 py-3 text-slate-600">{{ c.totalSpent | currency: 'USD' : 'symbol' : '1.0-0' }}</td>
                 <td class="px-4 py-3 text-slate-600">{{ c.lastOrder }}</td>
+                <td class="px-4 py-3 text-slate-600">
+                  @if (notes()[c.name]; as note) {
+                    <div class="text-slate-900">{{ note.body }}</div>
+                    <div class="text-xs text-slate-400">{{ note.created_at | date: 'MMM d, y, h:mm a' }}</div>
+                  } @else {
+                    <div class="text-slate-400">No notes yet</div>
+                  }
+                  <form class="mt-2 flex gap-2" (submit)="addNote($event, c.name, noteInput)">
+                    <input
+                      #noteInput
+                      type="text"
+                      maxlength="280"
+                      placeholder="Add a note…"
+                      [attr.aria-label]="'Note for ' + c.name"
+                      class="w-full min-w-40 rounded-md border border-slate-200 px-2 py-1 text-sm focus:border-slate-400 focus:outline-none"
+                    />
+                    <button
+                      type="submit"
+                      [disabled]="saving() === c.name"
+                      class="rounded-md bg-slate-900 px-3 py-1 text-xs font-medium text-white disabled:opacity-50"
+                    >
+                      Save
+                    </button>
+                  </form>
+                </td>
               </tr>
             } @empty {
-              <tr><td colspan="4" class="px-4 py-6 text-center text-slate-400">No customers yet.</td></tr>
+              <tr><td colspan="5" class="px-4 py-6 text-center text-slate-400">No customers yet.</td></tr>
             }
           </tbody>
         </table>
@@ -57,5 +83,30 @@ function summarize(orders: Order[]): CustomerSummary[] {
   `,
 })
 export class CustomersComponent {
-  customers$ = inject(AnalyticsService).getOrders().pipe(map(summarize));
+  private readonly analytics = inject(AnalyticsService);
+
+  customers$ = this.analytics.getOrders().pipe(map(summarize));
+  notes = signal<Record<string, CustomerNote>>({});
+  saving = signal<string | null>(null);
+
+  constructor() {
+    this.analytics.getLatestCustomerNotes().subscribe((list) => {
+      this.notes.set(Object.fromEntries(list.map((n) => [n.customer, n])));
+    });
+  }
+
+  addNote(event: Event, customer: string, input: HTMLInputElement): void {
+    event.preventDefault();
+    const body = input.value.trim();
+    if (!body) return;
+    this.saving.set(customer);
+    this.analytics.addCustomerNote(customer, body).subscribe({
+      next: (note) => {
+        this.notes.update((n) => ({ ...n, [customer]: note }));
+        input.value = '';
+        this.saving.set(null);
+      },
+      error: () => this.saving.set(null),
+    });
+  }
 }

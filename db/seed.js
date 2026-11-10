@@ -38,6 +38,18 @@ async function seed() {
     )
   `);
 
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS customer_notes (
+      id          SERIAL PRIMARY KEY,
+      customer    TEXT NOT NULL,
+      body        TEXT NOT NULL CHECK (char_length(body) BETWEEN 1 AND 280),
+      created_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+    )
+  `);
+  await pool.query(
+    'CREATE INDEX IF NOT EXISTS customer_notes_customer_created_idx ON customer_notes (customer, created_at DESC)'
+  );
+
   const { rowCount } = await pool.query('SELECT COUNT(*)::int AS c FROM orders');
   if (rowCount && rowCount > 0) {
     const existing = await pool.query('SELECT COUNT(*)::int AS c FROM orders');

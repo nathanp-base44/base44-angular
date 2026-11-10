@@ -21,6 +21,28 @@ app.get('/api/orders', async (_req, res) => {
   res.json(rows);
 });
 
+app.get('/api/customer-notes/latest', async (_req, res) => {
+  const { rows } = await pool.query(
+    `SELECT DISTINCT ON (customer) id, customer, body, created_at
+       FROM customer_notes
+      ORDER BY customer, created_at DESC, id DESC`
+  );
+  res.json(rows);
+});
+
+app.post('/api/customer-notes', async (req, res) => {
+  const customer = String(req.body?.customer ?? '').trim();
+  const body = String(req.body?.body ?? '').trim();
+  if (!customer || !body || body.length > 280) {
+    return res.status(400).json({ error: 'customer and a 1-280 character note are required' });
+  }
+  const { rows } = await pool.query(
+    'INSERT INTO customer_notes (customer, body) VALUES ($1, $2) RETURNING id, customer, body, created_at',
+    [customer, body]
+  );
+  res.status(201).json(rows[0]);
+});
+
 app.get('/api/health', async (_req, res) => {
   try {
     await pool.query('SELECT 1');
