@@ -10,7 +10,7 @@ import { AnalyticsService } from '../data/analytics.service';
   template: `
     <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm h-full flex flex-col">
       <div class="mb-4">
-        <h2 class="text-sm font-semibold text-slate-900">Revenue over time</h2>
+        <h2 class="text-sm font-semibold text-slate-900">Revenue by month</h2>
         <p class="text-xs text-slate-500">Monthly revenue and order volume, 2026</p>
       </div>
       <apx-chart
