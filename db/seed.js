@@ -1,4 +1,5 @@
 import pg from 'pg';
+import { hashPassword } from './auth.js';
 
 const { Pool } = pg;
 
@@ -25,7 +26,37 @@ const products = [
 ];
 const statuses = ['Paid', 'Paid', 'Paid', 'Pending', 'Refunded'];
 
+async function seedUsers() {
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS users (
+      id            SERIAL PRIMARY KEY,
+      name          TEXT NOT NULL,
+      email         TEXT NOT NULL UNIQUE,
+      role          TEXT NOT NULL CHECK (role IN ('Admin', 'Viewer')),
+      password_hash TEXT NOT NULL,
+      created_at    TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    )
+  `);
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS sessions (
+      token      TEXT PRIMARY KEY,
+      user_id    INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      expires_at TIMESTAMPTZ NOT NULL
+    )
+  `);
+  const { rows } = await pool.query('SELECT COUNT(*)::int AS c FROM users');
+  if (rows[0].c > 0) return;
+  const email = process.env.SEED_ADMIN_EMAIL || 'admin@example.com';
+  const password = process.env.SEED_ADMIN_PASSWORD || 'admin1234';
+  await pool.query(
+    `INSERT INTO users (name, email, role, password_hash) VALUES ('Admin', $1, 'Admin', $2)`,
+    [email, hashPassword(password)]
+  );
+  console.log(`seeded admin user ${email}`);
+}
+
 async function seed() {
+  await seedUsers();
   await pool.query(`
     CREATE TABLE IF NOT EXISTS orders (
       id        TEXT PRIMARY KEY,

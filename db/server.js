@@ -1,5 +1,7 @@
 import express from 'express';
 import pg from 'pg';
+import { loadUser } from './auth.js';
+import { authRouter, usersRouter } from './users.js';
 
 const { Pool } = pg;
 
@@ -13,6 +15,9 @@ const pool = new Pool({
 
 const app = express();
 app.use(express.json());
+app.use(loadUser(pool));
+app.use('/api/auth', authRouter(pool));
+app.use('/api/users', usersRouter(pool));
 
 app.get('/api/orders', async (_req, res) => {
   const { rows } = await pool.query(
