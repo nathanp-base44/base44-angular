@@ -34,6 +34,7 @@ export class SidebarComponent {
     { label: 'Orders', icon: '🧾', link: '/orders' },
     { label: 'Customers', icon: '👥', link: '/customers' },
     { label: 'Reports', icon: '📈', link: '/' },
+    { label: 'Users', icon: '🔐', link: '/users' },
     { label: 'About', icon: 'ℹ️', link: '/about' },
   ];
 }
